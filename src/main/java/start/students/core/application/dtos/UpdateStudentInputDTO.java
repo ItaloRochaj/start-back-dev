@@ -1,32 +1,19 @@
 package start.students.core.application.dtos;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
+@Data
 public class UpdateStudentInputDTO {
+    @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
+    private String name;
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public class UpdateStudentInputDTO {
+    @Size(min = 11, max = 14, message = "CPF deve ter formato válido")
+    private String cpf;
 
-        @NotBlank(message = "Email é obrigatório")
-        @Email(message = "Email deve ser válido")
-        private String email;
+    @Email(message = "Email deve ter formato válido")
+    private String email;
 
-        @NotBlank(message = "Telefone é obrigatório")
-        private String telefone;
-
-        @NotNull(message = "Status é obrigatório")
-        private String status;
-
-        private String foto;
-
-    }
+    private String phone;
 }
