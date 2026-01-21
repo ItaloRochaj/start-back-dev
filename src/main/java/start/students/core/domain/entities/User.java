@@ -1,26 +1,18 @@
 package start.students.core.domain.entities;
 
-import start.students.core.domain.valueobjects.Email;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
-
-    private final String id;
-    private final String username;
-    private final String password;
-    private final Email email;
-    private final boolean ativo;
-
-    public User(String id, String username, String password, Email email, boolean ativo) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.ativo = ativo;
-    }
-
-    public String getId() { return id; }
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-    public Email getEmail() { return email; }
-    public boolean isAtivo() { return ativo; }
+    private String id;
+    private String username;
+    private String password;
+    private String email;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
