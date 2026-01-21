@@ -1,39 +1,24 @@
 package start.students.core.domain.valueobjects;
 
-public class StudentId {
-    private final String value;
+import lombok.Value;
+import start.students.core.domain.exceptions.DomainException;
 
-    public StudentId() {
-        this.value = java.util.UUID.randomUUID().toString();
-    }
+import java.util.UUID;
+
+@Value
+public class StudentId {
+    String value;
 
     public StudentId(String value) {
-        if (value == null || value.isBlank()) {
-            throw new IllegalArgumentException("StudentId não pode ser vazio");
+        if (value == null || value.trim().isEmpty()) {
+            throw new DomainException("ID do estudante não pode ser vazio");
         }
-        this.value = value;
+
+        this.value = value.trim();
     }
 
-    public String getValue() {
-        return value;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StudentId studentId = (StudentId) o;
-        return value.equals(studentId.value);
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public String toString() {
-        return value;
+    public static StudentId generate() {
+        return new StudentId(UUID.randomUUID().toString());
     }
 
 }
