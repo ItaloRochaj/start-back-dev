@@ -6,36 +6,39 @@ import start.students.core.application.dtos.StudentOutputDTO;
 import start.students.core.application.dtos.UpdateStudentInputDTO;
 import start.students.core.application.mappers.StudentMapper;
 import start.students.core.domain.entities.Student;
+import start.students.core.domain.exceptions.DomainException;
 import start.students.core.domain.exceptions.StudentNotFoundException;
-import start.students.core.domain.valueobjects.Status;
-import start.students.core.domain.valueobjects.StudentId;
 import start.students.core.ports.StudentRepositoryPort;
 
+@Service
+@RequiredArgsConstructor
 public class UpdateStudentUseCase {
 
-    @Service
-    @RequiredArgsConstructor
-    public class UpdateStudentUseCase {
+    private final StudentRepositoryPort studentRepository;
+    private final StudentMapper studentMapper;
 
-        private final StudentRepositoryPort studentRepository;
-        private final StudentMapper studentMapper;
+    public StudentOutputDTO execute(String id, UpdateStudentInputDTO input) {
+        Student existingStudent = studentRepository.findById(id)
+                .orElseThrow(() -> new StudentNotFoundException("Estudante não encontrado"));
 
-        public StudentOutputDTO execute(String studentId, UpdateStudentInputDTO input) {
-            Student student = studentRepository.findById(new StudentId(studentId))
-                    .orElseThrow(() -> new StudentNotFoundException("Aluno não encontrado"));
-
-            Status status = Status.valueOf(input.getStatus().toUpperCase());
-
-            student.atualizar(
-                    input.getEmail(),
-                    input.getTelefone(),
-                    status,
-                    input.getFoto()
-            );
-
-            Student studentAtualizado = studentRepository.save(student);
-            return studentMapper.toOutputDTO(studentAtualizado);
+        // Validar CPF se foi alterado
+        if (input.getCpf() != null && !input.getCpf().equals(existingStudent.getCpf())
+            && studentRepository.existsByCpf(input.getCpf())) {
+            throw new DomainException("CPF já está cadastrado");
         }
 
+        // Validar email se foi alterado
+        if (input.getEmail() != null && !input.getEmail().equals(existingStudent.getEmail())
+            && studentRepository.existsByEmail(input.getEmail())) {
+            throw new DomainException("Email já está cadastrado");
+        }
+
+        // Atualizar campos não nulos
+        studentMapper.updateEntityFromDTO(input, existingStudent);
+
+        // Salvar alterações
+        Student updatedStudent = studentRepository.save(existingStudent);
+
+        return studentMapper.toOutputDTO(updatedStudent);
     }
 }

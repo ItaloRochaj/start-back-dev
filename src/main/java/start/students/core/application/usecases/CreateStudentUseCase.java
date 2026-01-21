@@ -9,39 +9,31 @@ import start.students.core.domain.entities.Student;
 import start.students.core.domain.exceptions.DomainException;
 import start.students.core.ports.StudentRepositoryPort;
 
-import java.util.UUID;
-
+@Service
+@RequiredArgsConstructor
 public class CreateStudentUseCase {
-    @Service
-    @RequiredArgsConstructor
-    public class CreateStudentUseCase {
 
-        private final StudentRepositoryPort studentRepository;
-        private final StudentMapper studentMapper;
+    private final StudentRepositoryPort studentRepository;
+    private final StudentMapper studentMapper;
 
-        public StudentOutputDTO execute(CreateStudentInputDTO input) {
-            if (studentRepository.findByEmail(input.getEmail()).isPresent()) {
-                throw new DomainException("Email já cadastrado");
-            }
-
-            if (studentRepository.findByCpf(input.getCpf()).isPresent()) {
-                throw new DomainException("CPF já cadastrado");
-            }
-
-            String matricula = "MAT" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-
-            Student student = Student.criar(
-                    matricula,
-                    input.getNomeCompleto(),
-                    input.getEmail(),
-                    input.getCpf(),
-                    input.getTelefone(),
-                    input.getFoto()
-            );
-
-            Student studentSalvo = studentRepository.save(student);
-            return studentMapper.toOutputDTO(studentSalvo);
+    public StudentOutputDTO execute(CreateStudentInputDTO input) {
+        // Validar se CPF já existe
+        if (studentRepository.existsByCpf(input.getCpf())) {
+            throw new DomainException("CPF já está cadastrado");
         }
 
+        // Validar se email já existe
+        if (studentRepository.existsByEmail(input.getEmail())) {
+            throw new DomainException("Email já está cadastrado");
+        }
+
+        // Converter DTO para entidade
+        Student student = studentMapper.toEntity(input);
+
+        // Salvar no repositório
+        Student savedStudent = studentRepository.save(student);
+
+        // Converter entidade para DTO de saída
+        return studentMapper.toOutputDTO(savedStudent);
     }
 }
