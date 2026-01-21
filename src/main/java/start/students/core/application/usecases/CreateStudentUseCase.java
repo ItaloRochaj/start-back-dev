@@ -2,7 +2,14 @@ package start.students.core.application.usecases;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import start.students.core.application.dtos.CreateStudentInputDTO;
+import start.students.core.application.dtos.StudentOutputDTO;
+import start.students.core.application.mappers.StudentMapper;
+import start.students.core.domain.entities.Student;
+import start.students.core.domain.exceptions.DomainException;
 import start.students.core.ports.StudentRepositoryPort;
+
+import java.util.UUID;
 
 public class CreateStudentUseCase {
     @Service
@@ -37,3 +44,4 @@ public class CreateStudentUseCase {
         }
 
     }
+}

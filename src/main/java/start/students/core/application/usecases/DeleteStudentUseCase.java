@@ -3,6 +3,8 @@ package start.students.core.application.usecases;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import start.students.core.domain.entities.Student;
+import start.students.core.domain.exceptions.StudentNotFoundException;
+import start.students.core.domain.valueobjects.StudentId;
 import start.students.core.ports.StudentRepositoryPort;
 
 public class DeleteStudentUseCase {
@@ -19,5 +21,5 @@ public class DeleteStudentUseCase {
             student.deletar();
             studentRepository.save(student);
         }
-
     }
+}

@@ -2,6 +2,9 @@ package start.students.core.application.usecases;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import start.students.core.application.dtos.StudentOutputDTO;
+import start.students.core.application.dtos.UpdateStudentInputDTO;
+import start.students.core.application.mappers.StudentMapper;
 import start.students.core.domain.entities.Student;
 import start.students.core.domain.exceptions.StudentNotFoundException;
 import start.students.core.domain.valueobjects.Status;
