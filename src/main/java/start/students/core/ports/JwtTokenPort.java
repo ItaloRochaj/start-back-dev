@@ -1,10 +1,7 @@
 package start.students.core.ports;
 
-public class JwtTokenPort {
-
-    public interface JwtTokenPort {
-        String generateToken(String username);
-        boolean validateToken(String token);
-        String getUsernameFromToken(String token);
-    }
+public interface JwtTokenPort {
+    String generateToken(String username);
+    String extractUsername(String token);
+    boolean isTokenValid(String token, String username);
 }

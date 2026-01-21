@@ -1,30 +1,27 @@
 package start.students.core.ports;
 
 import start.students.core.domain.entities.Student;
-import start.students.core.domain.valueobjects.StudentId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
-public class StudentRepositoryPort {
+public interface StudentRepositoryPort {
+    Student save(Student student);
 
-    public interface StudentRepositoryPort {
-        Student save(Student student);
+    Optional<Student> findById(String id);
 
-        Optional<Student> findById(StudentId id);
+    void deleteById(String id);
 
-        Optional<Student> findByEmail(String email);
+    Page<Student> findAll(Pageable pageable);
 
-        Optional<Student> findByCpf(String cpf);
+    Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);
 
-        List<Student> findAll(int page, int size);
+    Page<Student> findByCpfContaining(String cpf, Pageable pageable);
 
-        List<Student> searchByName(String name, int page, int size);
+    Page<Student> findByEmailContainingIgnoreCase(String email, Pageable pageable);
 
-        List<Student> searchByMatricula(String matricula, int page, int size);
+    boolean existsByCpf(String cpf);
 
-        long count();
-
-        void delete(Student student);
-    }
+    boolean existsByEmail(String email);
 }
