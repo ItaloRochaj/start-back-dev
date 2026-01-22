@@ -20,4 +20,7 @@ public class CreateStudentInputDTO {
     private String email;
 
     private String phone;
+    
+    @Size(max = 2097152, message = "Foto não pode ser maior que 2MB") // 2MB em base64
+    private String photo;
 }

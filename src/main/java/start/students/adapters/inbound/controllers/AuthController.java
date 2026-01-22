@@ -14,7 +14,7 @@ import start.students.core.application.usecases.AuthenticationUseCase;
 import start.students.core.domain.exceptions.DomainException;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

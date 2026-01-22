@@ -16,4 +16,6 @@ public class UpdateStudentInputDTO {
     private String email;
 
     private String phone;
+    
+    private String photo;
 }

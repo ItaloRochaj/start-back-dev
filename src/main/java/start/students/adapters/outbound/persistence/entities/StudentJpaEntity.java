@@ -29,6 +29,9 @@ public class StudentJpaEntity {
     @Column(length = 20)
     private String phone;
 
+    @Column(columnDefinition = "TEXT")
+    private String photo;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

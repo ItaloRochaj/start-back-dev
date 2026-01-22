@@ -15,6 +15,7 @@ public class Student {
     private String cpf;
     private String email;
     private String phone;
+    private String photo;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

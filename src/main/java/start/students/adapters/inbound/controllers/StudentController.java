@@ -10,7 +10,7 @@ import start.students.core.application.usecases.*;
 import start.students.core.domain.exceptions.DomainException;
 
 @RestController
-@RequestMapping("/students")
+@RequestMapping("/api/students")
 @RequiredArgsConstructor
 public class StudentController {
 
@@ -27,6 +27,10 @@ public class StudentController {
             return ResponseEntity.ok(ApiResponse.success("Aluno criado com sucesso", result));
         } catch (DomainException e) {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
+        } catch (Exception e) {
+            // Log para debug
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(ApiResponse.error("Erro ao criar aluno: " + e.getMessage()));
         }
     }
 
