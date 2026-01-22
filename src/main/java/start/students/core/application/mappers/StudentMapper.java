@@ -19,6 +19,7 @@ public class StudentMapper {
         student.setCpf(dto.getCpf());
         student.setEmail(dto.getEmail());
         student.setPhone(dto.getPhone());
+        student.setPhoto(dto.getPhoto());
         student.setCreatedAt(LocalDateTime.now());
         student.setUpdatedAt(LocalDateTime.now());
         return student;
@@ -31,6 +32,7 @@ public class StudentMapper {
                 .cpf(student.getCpf())
                 .email(student.getEmail())
                 .phone(student.getPhone())
+                .photo(student.getPhoto())
                 .createdAt(student.getCreatedAt())
                 .updatedAt(student.getUpdatedAt())
                 .build();
@@ -48,6 +50,9 @@ public class StudentMapper {
         }
         if (dto.getPhone() != null && !dto.getPhone().trim().isEmpty()) {
             student.setPhone(dto.getPhone());
+        }
+        if (dto.getPhoto() != null && !dto.getPhoto().trim().isEmpty()) {
+            student.setPhoto(dto.getPhoto());
         }
         student.setUpdatedAt(LocalDateTime.now());
     }
