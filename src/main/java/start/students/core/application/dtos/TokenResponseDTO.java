@@ -8,5 +8,6 @@ import lombok.Data;
 public class TokenResponseDTO {
     private String token;
     private String username;
+    @Builder.Default
     private String tokenType = "Bearer";
 }
