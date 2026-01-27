@@ -1,6 +1,6 @@
 # 🎓 Start Students API
 
-Uma API REST completa para gerenciamento de estudantes construída com **Spring Boot 3.5.9** e **Java 17**. Oferece autenticação segura com JWT, operações CRUD robustas, paginação inteligente e integração com PostgreSQL.
+Uma API REST completa para gerenciamento de estudantes construída com **Spring Boot 3.5.9** e **Java 17**. Oferece autenticação segura com JWT, operações CRUD, paginação e integração com PostgreSQL.
 
 <p>
   <a href="https://spring.io/projects/spring-boot"><img alt="Spring Boot" src="https://img.shields.io/badge/Spring%20Boot-3.5.9-6DB33F?logo=springboot&logoColor=white" /></a>
