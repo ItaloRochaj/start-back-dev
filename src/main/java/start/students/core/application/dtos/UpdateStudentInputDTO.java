@@ -18,4 +18,6 @@ public class UpdateStudentInputDTO {
     private String phone;
     
     private String photo;
+
+    private String status;
 }

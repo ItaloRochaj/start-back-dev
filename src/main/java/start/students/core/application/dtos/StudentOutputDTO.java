@@ -14,6 +14,7 @@ public class StudentOutputDTO {
     private String email;
     private String phone;
     private String photo;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

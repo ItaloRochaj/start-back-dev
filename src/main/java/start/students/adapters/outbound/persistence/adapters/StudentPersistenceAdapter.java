@@ -72,6 +72,7 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
                 student.getEmail(),
                 student.getPhone(),
                 student.getPhoto(),
+                student.getStatus(),
                 student.getCreatedAt(),
                 student.getUpdatedAt()
         );
@@ -85,6 +86,7 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
                 entity.getEmail(),
                 entity.getPhone(),
                 entity.getPhoto(),
+                entity.getStatus(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

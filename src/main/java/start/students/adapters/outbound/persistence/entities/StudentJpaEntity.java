@@ -32,6 +32,9 @@ public class StudentJpaEntity {
     @Column(columnDefinition = "TEXT")
     private String photo;
 
+    @Column(name = "status", length = 20)
+    private String status;
+
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 

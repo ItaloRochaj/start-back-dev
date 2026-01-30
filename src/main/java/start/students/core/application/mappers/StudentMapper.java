@@ -20,6 +20,7 @@ public class StudentMapper {
         student.setEmail(dto.getEmail());
         student.setPhone(dto.getPhone());
         student.setPhoto(dto.getPhoto());
+        student.setStatus("Ativo");
         student.setCreatedAt(LocalDateTime.now());
         student.setUpdatedAt(LocalDateTime.now());
         return student;
@@ -33,6 +34,7 @@ public class StudentMapper {
                 .email(student.getEmail())
                 .phone(student.getPhone())
                 .photo(student.getPhoto())
+                .status(student.getStatus())
                 .createdAt(student.getCreatedAt())
                 .updatedAt(student.getUpdatedAt())
                 .build();
@@ -53,6 +55,9 @@ public class StudentMapper {
         }
         if (dto.getPhoto() != null && !dto.getPhoto().trim().isEmpty()) {
             student.setPhoto(dto.getPhoto());
+        }
+        if (dto.getStatus() != null && !dto.getStatus().trim().isEmpty()) {
+            student.setStatus(dto.getStatus());
         }
         student.setUpdatedAt(LocalDateTime.now());
     }
