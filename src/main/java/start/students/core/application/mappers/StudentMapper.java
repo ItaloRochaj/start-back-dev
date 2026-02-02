@@ -7,14 +7,20 @@ import start.students.core.application.dtos.UpdateStudentInputDTO;
 import start.students.core.domain.entities.Student;
 
 import java.time.LocalDateTime;
+import java.time.Year;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Component
 public class StudentMapper {
+    
+    // Contador sequencial para matrícula (em produção, usar banco de dados)
+    private static final AtomicLong matriculaCounter = new AtomicLong(1);
 
     public Student toEntity(CreateStudentInputDTO dto) {
         Student student = new Student();
         student.setId(UUID.randomUUID().toString());
+        student.setMatricula(generateMatricula());
         student.setName(dto.getName());
         student.setCpf(dto.getCpf());
         student.setEmail(dto.getEmail());
@@ -29,6 +35,7 @@ public class StudentMapper {
     public StudentOutputDTO toOutputDTO(Student student) {
         return StudentOutputDTO.builder()
                 .id(student.getId())
+                .matricula(student.getMatricula())
                 .name(student.getName())
                 .cpf(student.getCpf())
                 .email(student.getEmail())
@@ -60,5 +67,14 @@ public class StudentMapper {
             student.setStatus(dto.getStatus());
         }
         student.setUpdatedAt(LocalDateTime.now());
+    }
+
+    /**
+     * Gera matrícula no formato YYYY + sequência (ex: 2026000001)
+     */
+    private String generateMatricula() {
+        int currentYear = Year.now().getValue();
+        long sequence = matriculaCounter.getAndIncrement();
+        return String.format("%d%05d", currentYear, sequence);
     }
 }
