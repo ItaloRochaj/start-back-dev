@@ -17,6 +17,9 @@ public class StudentJpaEntity {
     @Id
     private String id;
 
+    @Column(unique = true, length = 20)
+    private String matricula;
+
     @Column(nullable = false, length = 100)
     private String name;
 
