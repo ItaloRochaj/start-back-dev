@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Builder
 public class StudentOutputDTO {
     private String id;
+    private String matricula;
     private String name;
     private String cpf;
     private String email;
