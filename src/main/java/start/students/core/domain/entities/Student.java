@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Student {
     private String id;
+    private String matricula;
     private String name;
     private String cpf;
     private String email;
