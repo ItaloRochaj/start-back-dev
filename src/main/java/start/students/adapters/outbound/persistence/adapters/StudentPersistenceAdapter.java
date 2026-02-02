@@ -55,6 +55,16 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
     }
 
     @Override
+    public Page<Student> findByIdContaining(String id, Pageable pageable) {
+        return repository.findByIdContaining(id, pageable).map(this::toDomain);
+    }
+
+    @Override
+    public Page<Student> findByMatriculaContaining(String matricula, Pageable pageable) {
+        return repository.findByMatriculaContaining(matricula, pageable).map(this::toDomain);
+    }
+
+    @Override
     public boolean existsByCpf(String cpf) {
         return repository.existsByCpf(cpf);
     }
@@ -67,6 +77,7 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
     private StudentJpaEntity toEntity(Student student) {
         return new StudentJpaEntity(
                 student.getId(),
+                student.getMatricula(),
                 student.getName(),
                 student.getCpf(),
                 student.getEmail(),
@@ -81,6 +92,7 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
     private Student toDomain(StudentJpaEntity entity) {
         return new Student(
                 entity.getId(),
+                entity.getMatricula(),
                 entity.getName(),
                 entity.getCpf(),
                 entity.getEmail(),

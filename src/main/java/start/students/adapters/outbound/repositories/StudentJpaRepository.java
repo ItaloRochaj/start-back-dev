@@ -3,6 +3,8 @@ package start.students.adapters.outbound.repositories;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import start.students.adapters.outbound.persistence.entities.StudentJpaEntity;
 
@@ -14,6 +16,11 @@ public interface StudentJpaRepository extends JpaRepository<StudentJpaEntity, St
     Page<StudentJpaEntity> findByCpfContaining(String cpf, Pageable pageable);
 
     Page<StudentJpaEntity> findByEmailContainingIgnoreCase(String email, Pageable pageable);
+
+    @Query("SELECT s FROM StudentJpaEntity s WHERE CAST(s.matricula AS string) LIKE :matricula")
+    Page<StudentJpaEntity> findByIdContaining(@Param("matricula") String matricula, Pageable pageable);
+
+    Page<StudentJpaEntity> findByMatriculaContaining(String matricula, Pageable pageable);
 
     boolean existsByCpf(String cpf);
 

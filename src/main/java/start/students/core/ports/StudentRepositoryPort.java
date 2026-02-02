@@ -21,6 +21,10 @@ public interface StudentRepositoryPort {
 
     Page<Student> findByEmailContainingIgnoreCase(String email, Pageable pageable);
 
+    Page<Student> findByIdContaining(String id, Pageable pageable);
+
+    Page<Student> findByMatriculaContaining(String matricula, Pageable pageable);
+
     boolean existsByCpf(String cpf);
 
     boolean existsByEmail(String email);

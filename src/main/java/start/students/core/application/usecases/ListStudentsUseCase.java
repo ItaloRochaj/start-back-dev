@@ -34,6 +34,9 @@ public class ListStudentsUseCase {
                 case "email":
                     studentsPage = studentRepository.findByEmailContainingIgnoreCase(search, pageable);
                     break;
+                case "matricula":
+                    studentsPage = studentRepository.findByMatriculaContaining(search, pageable);
+                    break;
                 case "name":
                 default:
                     studentsPage = studentRepository.findByNameContainingIgnoreCase(search, pageable);
