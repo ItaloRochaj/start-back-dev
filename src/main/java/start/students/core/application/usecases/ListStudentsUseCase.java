@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import start.students.core.application.dtos.StudentOutputDTO;
 import start.students.core.application.dtos.StudentPagedOutputDTO;
 import start.students.core.application.mappers.StudentMapper;
 import start.students.core.domain.entities.Student;
