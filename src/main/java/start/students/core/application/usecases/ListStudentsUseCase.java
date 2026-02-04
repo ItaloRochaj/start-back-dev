@@ -55,4 +55,12 @@ public class ListStudentsUseCase {
                 .last(studentsPage.isLast())
                 .build();
     }
+
+    public boolean validateCpfExists(String cpf) {
+        return studentRepository.existsByCpf(cpf);
+    }
+
+    public boolean validateEmailExists(String email) {
+        return studentRepository.existsByEmail(email);
+    }
 }

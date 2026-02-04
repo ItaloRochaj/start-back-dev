@@ -79,4 +79,22 @@ public class StudentController {
             return ResponseEntity.badRequest().body(ApiResponse.error(e.getMessage()));
         }
     }
+
+    @GetMapping("/validate/cpf")
+    public ResponseEntity<ApiResponse<Boolean>> validateCpf(@RequestParam String cpf) {
+        boolean exists = listStudentsUseCase.validateCpfExists(cpf);
+        if (exists) {
+            return ResponseEntity.ok(ApiResponse.success("CPF já cadastrado", true));
+        }
+        return ResponseEntity.ok(ApiResponse.success("CPF disponível", false));
+    }
+
+    @GetMapping("/validate/email")
+    public ResponseEntity<ApiResponse<Boolean>> validateEmail(@RequestParam String email) {
+        boolean exists = listStudentsUseCase.validateEmailExists(email);
+        if (exists) {
+            return ResponseEntity.ok(ApiResponse.success("Email já cadastrado", true));
+        }
+        return ResponseEntity.ok(ApiResponse.success("Email disponível", false));
+    }
 }
