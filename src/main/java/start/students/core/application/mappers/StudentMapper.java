@@ -1,6 +1,8 @@
 package start.students.core.application.mappers;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import start.students.adapters.outbound.repositories.StudentJpaRepository;
 import start.students.core.application.dtos.CreateStudentInputDTO;
 import start.students.core.application.dtos.StudentOutputDTO;
 import start.students.core.application.dtos.UpdateStudentInputDTO;
@@ -9,13 +11,12 @@ import start.students.core.domain.entities.Student;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Component
+@RequiredArgsConstructor
 public class StudentMapper {
-    
-    // Contador sequencial para matrícula (em produção, usar banco de dados)
-    private static final AtomicLong matriculaCounter = new AtomicLong(1);
+
+    private final StudentJpaRepository studentJpaRepository;
 
     public Student toEntity(CreateStudentInputDTO dto) {
         Student student = new Student();
@@ -71,10 +72,28 @@ public class StudentMapper {
 
     /**
      * Gera matrícula no formato YYYY + sequência (ex: 2026000001)
+     * Consulta o banco de dados para obter o próximo número sequencial
      */
     private String generateMatricula() {
         int currentYear = Year.now().getValue();
-        long sequence = matriculaCounter.getAndIncrement();
+        Long maxMatricula = studentJpaRepository.findMaxMatricula();
+        
+        long sequence;
+        if (maxMatricula == null) {
+            // Primeira matrícula do ano
+            sequence = 1;
+        } else {
+            // Extrair sequência da matrícula anterior e incrementar
+            String maxMatriculaStr = String.valueOf(maxMatricula);
+            if (maxMatriculaStr.startsWith(String.valueOf(currentYear))) {
+                // Matrícula do ano atual, incrementar sequência
+                sequence = maxMatricula % 100000 + 1;
+            } else {
+                // Matrícula de ano anterior, começar nova sequência
+                sequence = 1;
+            }
+        }
+        
         return String.format("%d%05d", currentYear, sequence);
     }
 }

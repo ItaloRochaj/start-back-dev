@@ -25,4 +25,7 @@ public interface StudentJpaRepository extends JpaRepository<StudentJpaEntity, St
     boolean existsByCpf(String cpf);
 
     boolean existsByEmail(String email);
+
+    @Query(value = "SELECT MAX(CAST(matricula AS INTEGER)) FROM students", nativeQuery = true)
+    Long findMaxMatricula();
 }
