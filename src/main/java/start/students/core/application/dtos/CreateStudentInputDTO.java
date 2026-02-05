@@ -4,11 +4,13 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import start.students.core.application.dtos.validators.ValidFullName;
 
 @Data
 public class CreateStudentInputDTO {
     @NotBlank(message = "Nome é obrigatório")
     @Size(min = 2, max = 100, message = "Nome deve ter entre 2 e 100 caracteres")
+    @ValidFullName(message = "Nome deve ser completo (informe pelo menos nome e sobrenome)")
     private String name;
 
     @NotBlank(message = "CPF é obrigatório")
