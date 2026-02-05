@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import start.students.core.application.dtos.validators.ValidFullName;
+import start.students.core.application.dtos.validators.ValidCPF;
 
 @Data
 public class CreateStudentInputDTO {
@@ -15,6 +16,7 @@ public class CreateStudentInputDTO {
 
     @NotBlank(message = "CPF é obrigatório")
     @Size(min = 11, max = 14, message = "CPF deve ter formato válido")
+    @ValidCPF(message = "CPF inválido")
     private String cpf;
 
     @NotBlank(message = "Email é obrigatório")
