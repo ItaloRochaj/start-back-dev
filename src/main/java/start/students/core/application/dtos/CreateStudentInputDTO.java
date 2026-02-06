@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import start.students.core.application.dtos.validators.ValidFullName;
 import start.students.core.application.dtos.validators.ValidCPF;
+import start.students.core.application.dtos.validators.ValidPhone;
 
 @Data
 public class CreateStudentInputDTO {
@@ -23,6 +24,7 @@ public class CreateStudentInputDTO {
     @Email(message = "Email deve ter formato válido")
     private String email;
 
+    @ValidPhone
     private String phone;
     
     @Size(max = 2097152, message = "Foto não pode ser maior que 2MB") // 2MB em base64

@@ -3,6 +3,7 @@ package start.students.core.application.dtos;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import start.students.core.application.dtos.validators.ValidPhone;
 
 @Data
 public class UpdateStudentInputDTO {
@@ -15,6 +16,7 @@ public class UpdateStudentInputDTO {
     @Email(message = "Email deve ter formato válido")
     private String email;
 
+    @ValidPhone
     private String phone;
     
     private String photo;
