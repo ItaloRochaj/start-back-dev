@@ -23,6 +23,12 @@ public class AuthenticationUseCase {
     public TokenResponseDTO authenticate(LoginInputDTO input) {
         log.info("Tentativa de login para usuário: {}", input.getUsername());
         
+        // Validação defensiva: verificar formato alphanumeric
+        if (!isValidAlphanumeric(input.getUsername()) || !isValidAlphanumeric(input.getPassword())) {
+            log.warn("Tentativa de login com formato inválido. Username: {}", input.getUsername());
+            throw new DomainException("Username e Password devem conter apenas letras (sem acento) e números");
+        }
+        
         // Buscar usuário por username
         User user = userRepository.findByUsername(input.getUsername())
                 .orElseThrow(() -> {
@@ -52,5 +58,13 @@ public class AuthenticationUseCase {
                 .token(token)
                 .username(user.getUsername())
                 .build();
+    }
+
+    /**
+     * Valida se o valor contém apenas letras (a-z, A-Z) e números (0-9)
+     * Rejeita: espaços, acentos, cedilha, caracteres especiais
+     */
+    private boolean isValidAlphanumeric(String value) {
+        return value != null && value.matches("^[a-zA-Z0-9]+$");
     }
 }

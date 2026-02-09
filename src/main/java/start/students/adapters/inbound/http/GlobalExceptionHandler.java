@@ -47,7 +47,27 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Void>> handleValidationException(MethodArgumentNotValidException ex) {
         String message = ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(error -> {
+                    String field = error.getField();
+                    String errorMsg = error.getDefaultMessage();
+                    
+                    // Personalizar mensagens para login
+                    if ("username".equalsIgnoreCase(field)) {
+                        if (errorMsg.contains("pattern")) {
+                            return "Username deve conter apenas letras (sem acento) e números";
+                        } else if (errorMsg.contains("size") || errorMsg.contains("length")) {
+                            return "Username deve conter entre 8 e 50 caracteres";
+                        }
+                    } else if ("password".equalsIgnoreCase(field)) {
+                        if (errorMsg.contains("pattern")) {
+                            return "Password deve conter apenas letras (sem acento) e números";
+                        } else if (errorMsg.contains("size") || errorMsg.contains("length")) {
+                            return "Password deve conter entre 8 e 100 caracteres";
+                        }
+                    }
+                    
+                    return field + ": " + errorMsg;
+                })
                 .findFirst()
                 .orElse("Erro de validação");
 
