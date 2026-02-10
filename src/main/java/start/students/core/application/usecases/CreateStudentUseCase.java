@@ -1,8 +1,5 @@
 package start.students.core.application.usecases;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import start.students.core.application.dtos.CreateStudentInputDTO;
 import start.students.core.application.dtos.StudentOutputDTO;
 import start.students.core.application.mappers.StudentMapper;
@@ -10,14 +7,16 @@ import start.students.core.domain.entities.Student;
 import start.students.core.domain.exceptions.DomainException;
 import start.students.core.ports.StudentRepositoryPort;
 
-@Service
-@RequiredArgsConstructor
 public class CreateStudentUseCase {
 
     private final StudentRepositoryPort studentRepository;
     private final StudentMapper studentMapper;
 
-    @Transactional
+    public CreateStudentUseCase(StudentRepositoryPort studentRepository, StudentMapper studentMapper) {
+        this.studentRepository = studentRepository;
+        this.studentMapper = studentMapper;
+    }
+
     public StudentOutputDTO execute(CreateStudentInputDTO input) {
         // Validar se CPF já existe
         if (studentRepository.existsByCpf(input.getCpf())) {
