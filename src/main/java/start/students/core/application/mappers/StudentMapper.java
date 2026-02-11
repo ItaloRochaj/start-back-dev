@@ -1,27 +1,26 @@
 package start.students.core.application.mappers;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import start.students.adapters.outbound.repositories.StudentJpaRepository;
 import start.students.core.application.dtos.CreateStudentInputDTO;
 import start.students.core.application.dtos.StudentOutputDTO;
 import start.students.core.application.dtos.UpdateStudentInputDTO;
 import start.students.core.domain.entities.Student;
 
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.UUID;
 
-@Component
-@RequiredArgsConstructor
 public class StudentMapper {
 
-    private final StudentJpaRepository studentJpaRepository;
+    // Dependência para gerar matrícula - será injetada via construtor
+    private final MatriculaService matriculaService;
+
+    public StudentMapper(MatriculaService matriculaService) {
+        this.matriculaService = matriculaService;
+    }
 
     public Student toEntity(CreateStudentInputDTO dto) {
         Student student = new Student();
         student.setId(UUID.randomUUID().toString());
-        student.setMatricula(generateMatricula());
+        student.setMatricula(matriculaService.generateMatricula());
         student.setName(dto.getName());
         student.setCpf(dto.getCpf());
         student.setEmail(dto.getEmail());
@@ -71,29 +70,10 @@ public class StudentMapper {
     }
 
     /**
-     * Gera matrícula no formato YYYY + sequência (ex: 2026000001)
-     * Consulta o banco de dados para obter o próximo número sequencial
+     * Interface que deve ser implementada pelos adapters
+     * Remove a necessidade de injetar repositório diretamente no core
      */
-    private String generateMatricula() {
-        int currentYear = Year.now().getValue();
-        Long maxMatricula = studentJpaRepository.findMaxMatricula();
-        
-        long sequence;
-        if (maxMatricula == null) {
-            // Primeira matrícula do ano
-            sequence = 1;
-        } else {
-            // Extrair sequência da matrícula anterior e incrementar
-            String maxMatriculaStr = String.valueOf(maxMatricula);
-            if (maxMatriculaStr.startsWith(String.valueOf(currentYear))) {
-                // Matrícula do ano atual, incrementar sequência
-                sequence = maxMatricula % 100000 + 1;
-            } else {
-                // Matrícula de ano anterior, começar nova sequência
-                sequence = 1;
-            }
-        }
-        
-        return String.format("%d%05d", currentYear, sequence);
+    public interface MatriculaService {
+        String generateMatricula();
     }
 }
