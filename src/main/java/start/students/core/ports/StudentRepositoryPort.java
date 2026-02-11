@@ -1,8 +1,8 @@
 package start.students.core.ports;
 
 import start.students.core.domain.entities.Student;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import start.students.core.application.usecases.ListStudentsUseCase.PaginationRequest;
+import start.students.core.application.usecases.ListStudentsUseCase.PaginationResponse;
 
 import java.util.Optional;
 
@@ -13,17 +13,7 @@ public interface StudentRepositoryPort {
 
     void deleteById(String id);
 
-    Page<Student> findAll(Pageable pageable);
-
-    Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable);
-
-    Page<Student> findByCpfContaining(String cpf, Pageable pageable);
-
-    Page<Student> findByEmailContainingIgnoreCase(String email, Pageable pageable);
-
-    Page<Student> findByIdContaining(String id, Pageable pageable);
-
-    Page<Student> findByMatriculaContaining(String matricula, Pageable pageable);
+    PaginationResponse<Student> findPagedStudents(PaginationRequest request);
 
     boolean existsByCpf(String cpf);
 
