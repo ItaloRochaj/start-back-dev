@@ -1,21 +1,25 @@
 package start.students.adapters.outbound.persistence.adapters;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
 import start.students.adapters.outbound.persistence.entities.StudentJpaEntity;
 import start.students.adapters.outbound.repositories.StudentJpaRepository;
+import start.students.core.application.usecases.ListStudentsUseCase.PaginationRequest;
+import start.students.core.application.usecases.ListStudentsUseCase.PaginationResponse;
 import start.students.core.domain.entities.Student;
 import start.students.core.ports.StudentRepositoryPort;
 
+import java.time.Year;
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class StudentPersistenceAdapter implements StudentRepositoryPort {
 
     private final StudentJpaRepository repository;
+
+    public StudentPersistenceAdapter(StudentJpaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Student save(Student student) {
@@ -35,33 +39,39 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
     }
 
     @Override
-    public Page<Student> findAll(Pageable pageable) {
-        return repository.findAll(pageable).map(this::toDomain);
-    }
+    public PaginationResponse<Student> findPagedStudents(PaginationRequest request) {
+        Pageable pageable = PageRequest.of(request.getPage(), request.getSize());
+        Page<Student> studentsPage;
 
-    @Override
-    public Page<Student> findByNameContainingIgnoreCase(String name, Pageable pageable) {
-        return repository.findByNameContainingIgnoreCase(name, pageable).map(this::toDomain);
-    }
+        if (request.getSearch() == null || request.getSearch().trim().isEmpty()) {
+            studentsPage = repository.findAll(pageable).map(this::toDomain);
+        } else {
+            switch (request.getSearchType().toLowerCase()) {
+                case "cpf":
+                    studentsPage = repository.findByCpfContaining(request.getSearch(), pageable).map(this::toDomain);
+                    break;
+                case "email":
+                    studentsPage = repository.findByEmailContainingIgnoreCase(request.getSearch(), pageable).map(this::toDomain);
+                    break;
+                case "matricula":
+                    studentsPage = repository.findByMatriculaContaining(request.getSearch(), pageable).map(this::toDomain);
+                    break;
+                case "name":
+                default:
+                    studentsPage = repository.findByNameContainingIgnoreCase(request.getSearch(), pageable).map(this::toDomain);
+                    break;
+            }
+        }
 
-    @Override
-    public Page<Student> findByCpfContaining(String cpf, Pageable pageable) {
-        return repository.findByCpfContaining(cpf, pageable).map(this::toDomain);
-    }
-
-    @Override
-    public Page<Student> findByEmailContainingIgnoreCase(String email, Pageable pageable) {
-        return repository.findByEmailContainingIgnoreCase(email, pageable).map(this::toDomain);
-    }
-
-    @Override
-    public Page<Student> findByIdContaining(String id, Pageable pageable) {
-        return repository.findByIdContaining(id, pageable).map(this::toDomain);
-    }
-
-    @Override
-    public Page<Student> findByMatriculaContaining(String matricula, Pageable pageable) {
-        return repository.findByMatriculaContaining(matricula, pageable).map(this::toDomain);
+        return new PaginationResponse<>(
+                studentsPage.getContent(),
+                studentsPage.getNumber(),
+                studentsPage.getSize(),
+                studentsPage.getTotalElements(),
+                studentsPage.getTotalPages(),
+                studentsPage.isFirst(),
+                studentsPage.isLast()
+        );
     }
 
     @Override
