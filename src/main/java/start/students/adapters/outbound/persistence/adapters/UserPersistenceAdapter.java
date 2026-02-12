@@ -1,7 +1,5 @@
 package start.students.adapters.outbound.persistence.adapters;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import start.students.adapters.outbound.persistence.entities.UserJpaEntity;
 import start.students.adapters.outbound.repositories.UserJpaRepository;
 import start.students.core.domain.entities.User;
@@ -9,11 +7,13 @@ import start.students.core.ports.UserRepositoryPort;
 
 import java.util.Optional;
 
-@Component
-@RequiredArgsConstructor
 public class UserPersistenceAdapter implements UserRepositoryPort {
 
     private final UserJpaRepository repository;
+
+    public UserPersistenceAdapter(UserJpaRepository repository) {
+        this.repository = repository;
+    }
 
     @Override
     public Optional<User> findByUsername(String username) {
