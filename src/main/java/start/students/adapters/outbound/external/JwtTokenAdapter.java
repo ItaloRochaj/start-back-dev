@@ -4,21 +4,20 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 import start.students.core.ports.JwtTokenPort;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 
-@Component
 public class JwtTokenAdapter implements JwtTokenPort {
 
-    @Value("${jwt.secret:mySecretKey123456789012345678901234567890}")
-    private String secretKey;
+    private final String secretKey;
+    private final Long expiration;
 
-    @Value("${jwt.expiration:86400000}")
-    private Long expiration;
+    public JwtTokenAdapter(String secretKey, Long expiration) {
+        this.secretKey = secretKey;
+        this.expiration = expiration;
+    }
 
     private SecretKey getSigningKey() {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
