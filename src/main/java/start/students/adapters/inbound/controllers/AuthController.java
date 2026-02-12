@@ -1,7 +1,6 @@
 package start.students.adapters.inbound.controllers;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,10 +14,13 @@ import start.students.core.domain.exceptions.DomainException;
 
 @RestController
 @RequestMapping("/api/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationUseCase authenticationUseCase;
+
+    public AuthController(AuthenticationUseCase authenticationUseCase) {
+        this.authenticationUseCase = authenticationUseCase;
+    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<TokenResponseDTO>> login(@Valid @RequestBody LoginInputDTO input) {
