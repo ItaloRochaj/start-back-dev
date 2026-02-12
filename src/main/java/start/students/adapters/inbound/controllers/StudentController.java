@@ -1,7 +1,6 @@
 package start.students.adapters.inbound.controllers;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import start.students.adapters.inbound.http.ApiResponse;
@@ -11,7 +10,6 @@ import start.students.core.domain.exceptions.DomainException;
 
 @RestController
 @RequestMapping("/api/students")
-@RequiredArgsConstructor
 public class StudentController {
 
     private final CreateStudentUseCase createStudentUseCase;
@@ -19,6 +17,18 @@ public class StudentController {
     private final UpdateStudentUseCase updateStudentUseCase;
     private final DeleteStudentUseCase deleteStudentUseCase;
     private final ListStudentsUseCase listStudentsUseCase;
+
+    public StudentController(CreateStudentUseCase createStudentUseCase,
+                           GetStudentDetailUseCase getStudentDetailUseCase,
+                           UpdateStudentUseCase updateStudentUseCase,
+                           DeleteStudentUseCase deleteStudentUseCase,
+                           ListStudentsUseCase listStudentsUseCase) {
+        this.createStudentUseCase = createStudentUseCase;
+        this.getStudentDetailUseCase = getStudentDetailUseCase;
+        this.updateStudentUseCase = updateStudentUseCase;
+        this.deleteStudentUseCase = deleteStudentUseCase;
+        this.listStudentsUseCase = listStudentsUseCase;
+    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<StudentOutputDTO>> create(@Valid @RequestBody CreateStudentInputDTO input) {
