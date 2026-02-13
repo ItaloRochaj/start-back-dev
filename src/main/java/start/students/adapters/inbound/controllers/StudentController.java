@@ -1,6 +1,5 @@
 package start.students.adapters.inbound.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import start.students.adapters.inbound.http.ApiResponse;
@@ -31,7 +30,7 @@ public class StudentController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<StudentOutputDTO>> create(@Valid @RequestBody CreateStudentInputDTO input) {
+    public ResponseEntity<ApiResponse<StudentOutputDTO>> create(@RequestBody CreateStudentInputDTO input) {
         try {
             StudentOutputDTO result = createStudentUseCase.execute(input);
             return ResponseEntity.ok(ApiResponse.success("Aluno criado com sucesso", result));
@@ -57,7 +56,7 @@ public class StudentController {
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<StudentOutputDTO>> update(
             @PathVariable String id,
-            @Valid @RequestBody UpdateStudentInputDTO input) {
+            @RequestBody UpdateStudentInputDTO input) {
         try {
             StudentOutputDTO result = updateStudentUseCase.execute(id, input);
             return ResponseEntity.ok(ApiResponse.success("Aluno atualizado com sucesso", result));

@@ -1,6 +1,5 @@
 package start.students.adapters.inbound.controllers;
 
-import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +22,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<TokenResponseDTO>> login(@Valid @RequestBody LoginInputDTO input) {
+    public ResponseEntity<ApiResponse<TokenResponseDTO>> login(@RequestBody LoginInputDTO input) {
         try {
             TokenResponseDTO response = authenticationUseCase.authenticate(input);
             return ResponseEntity.ok(ApiResponse.success("Login realizado com sucesso", response));
