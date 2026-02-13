@@ -1,20 +1,13 @@
 package start.students.core.application.dtos.validators;
 
-import jakarta.validation.Constraint;
-import jakarta.validation.Payload;
-
-import java.lang.annotation.*;
-
 /**
- * Anotação customizada para validar nome completo
- * Exige pelo menos 2 palavras separadas por espaço
+ * Validador de Nome Completo
+ * Valida se o nome possui pelo menos 2 palavras
+ * 
+ * NOTA: Este arquivo foi desativado. A validação de nome completo agora ocorre
+ * no Value Object Name do domínio através de lógica de negócio pura.
  */
-@Target({ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER})
-@Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = FullNameValidator.class)
-@Documented
+@Deprecated(forRemoval = true)
 public @interface ValidFullName {
-    String message() default "Nome deve ser completo (pelo menos 2 palavras)";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+    // Mantido apenas para compatibilidade - será removido em breve
 }
