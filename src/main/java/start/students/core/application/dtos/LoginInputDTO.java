@@ -14,6 +14,7 @@ public class LoginInputDTO {
 
     @NotBlank(message = "Password é obrigatório")
     @Size(min = 8, max = 100, message = "Password deve ter entre 8 e 100 caracteres")
-    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Password deve conter apenas letras (sem acento) e números")
+    // Nota: @Pattern removido para aceitar hashes BCrypt que contêm $, ., etc
+    // Validação de formato alphanumeric feito apenas no frontend e no UseCase
     private String password;
 }
