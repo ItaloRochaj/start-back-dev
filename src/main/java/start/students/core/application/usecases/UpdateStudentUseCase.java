@@ -28,8 +28,8 @@ public class UpdateStudentUseCase {
         }
 
         // Validar email se foi alterado
-        if (input.getEmail() != null && !input.getEmail().equals(existingStudent.getEmail())
-            && studentRepository.existsByEmail(input.getEmail())) {
+        if (input.getEmail() != null && !input.getEmail().equalsIgnoreCase(existingStudent.getEmail())
+            && studentRepository.existsByEmailIgnoreCase(input.getEmail())) {
             throw new DomainException("Email já está cadastrado");
         }
 

@@ -74,6 +74,11 @@ public class StudentPersistenceAdapter implements StudentRepositoryPort {
         return repository.existsByEmail(email);
     }
 
+    @Override
+    public boolean existsByEmailIgnoreCase(String email) {
+        return repository.existsByEmailIgnoreCase(email);
+    }
+
     private StudentJpaEntity toEntity(Student student) {
         return new StudentJpaEntity(
                 student.getId(),

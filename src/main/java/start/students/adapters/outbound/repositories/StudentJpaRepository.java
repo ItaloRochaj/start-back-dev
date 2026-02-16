@@ -26,6 +26,9 @@ public interface StudentJpaRepository extends JpaRepository<StudentJpaEntity, St
 
     boolean existsByEmail(String email);
 
+    @Query("SELECT CASE WHEN COUNT(s) > 0 THEN true ELSE false END FROM StudentJpaEntity s WHERE LOWER(s.email) = LOWER(:email)")
+    boolean existsByEmailIgnoreCase(@Param("email") String email);
+
     @Query(value = "SELECT MAX(CAST(matricula AS INTEGER)) FROM students", nativeQuery = true)
     Long findMaxMatricula();
 }

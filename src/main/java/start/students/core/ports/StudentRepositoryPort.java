@@ -28,4 +28,6 @@ public interface StudentRepositoryPort {
     boolean existsByCpf(String cpf);
 
     boolean existsByEmail(String email);
+
+    boolean existsByEmailIgnoreCase(String email);
 }

@@ -61,6 +61,6 @@ public class ListStudentsUseCase {
     }
 
     public boolean validateEmailExists(String email) {
-        return studentRepository.existsByEmail(email);
+        return studentRepository.existsByEmailIgnoreCase(email);
     }
 }

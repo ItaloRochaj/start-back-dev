@@ -24,8 +24,8 @@ public class CreateStudentUseCase {
             throw new DomainException("CPF já está cadastrado");
         }
 
-        // Validar se email já existe
-        if (studentRepository.existsByEmail(input.getEmail())) {
+        // Validar se email já existe (case-insensitive)
+        if (studentRepository.existsByEmailIgnoreCase(input.getEmail())) {
             throw new DomainException("Email já está cadastrado");
         }
 
