@@ -62,9 +62,11 @@ public class AuthenticationUseCase {
 
     /**
      * Valida se o valor contém apenas letras (a-z, A-Z) e números (0-9)
-     * Rejeita: espaços, acentos, cedilha, caracteres especiais
+     * E exige PRESENÇA OBRIGATÓRIA de ambos (letras E números)
+     * Usa lookaheads positivos para garantir a combinação
+     * Rejeita: espaços, acentos, cedilha, caracteres especiais, apenas números, apenas letras
      */
     private boolean isValidAlphanumeric(String value) {
-        return value != null && value.matches("^[a-zA-Z0-9]+$");
+        return value != null && value.matches("^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]+$");
     }
 }

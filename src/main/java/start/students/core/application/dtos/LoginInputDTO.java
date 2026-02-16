@@ -9,7 +9,7 @@ import lombok.Data;
 public class LoginInputDTO {
     @NotBlank(message = "Username é obrigatório")
     @Size(min = 8, max = 50, message = "Username deve ter entre 8 e 50 caracteres")
-    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "Username deve conter apenas letras (sem acento) e números")
+    @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*[0-9])[a-zA-Z0-9]{8,50}$", message = "Username deve conter letras e números (sem acento)")
     private String username;
 
     @NotBlank(message = "Password é obrigatório")
