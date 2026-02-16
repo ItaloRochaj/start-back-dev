@@ -39,6 +39,12 @@ public class FullNameValidator implements ConstraintValidator<ValidFullName, Str
             }
         }
 
+        // Deve conter pelo menos uma letra (a-z, A-Z)
+        if (!trimmedName.matches(".*[a-zA-Z].*")) {
+            addConstraintViolation(context, "Informe um nome completo válido");
+            return false;
+        }
+
         return true;
     }
 
