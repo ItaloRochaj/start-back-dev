@@ -24,7 +24,8 @@ public class CreateStudentInputDTO {
     @ValidEmail(message = "Email deve conter apenas caracteres ASCII válidos (sem acentos ou cedilha)")
     private String email;
 
-    @ValidPhone
+    @NotBlank(message = "Telefone é obrigatório")
+    @ValidPhone(message = "Telefone deve ter 10 dígitos (fixo) ou 11 dígitos (celular)")
     private String phone;
     
     @Size(max = 2097152, message = "Foto não pode ser maior que 2MB") // 2MB em base64
