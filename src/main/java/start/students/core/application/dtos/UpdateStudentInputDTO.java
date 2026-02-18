@@ -1,9 +1,9 @@
 package start.students.core.application.dtos;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import start.students.core.application.dtos.validators.ValidPhone;
+import start.students.core.application.dtos.validators.ValidEmail;
 
 @Data
 public class UpdateStudentInputDTO {
@@ -13,7 +13,7 @@ public class UpdateStudentInputDTO {
     @Size(min = 11, max = 14, message = "CPF deve ter formato válido")
     private String cpf;
 
-    @Email(message = "Email deve ter formato válido")
+    @ValidEmail(message = "Email deve conter apenas caracteres ASCII válidos (sem acentos ou cedilha)")
     private String email;
 
     @ValidPhone
