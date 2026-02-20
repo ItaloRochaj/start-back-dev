@@ -133,9 +133,26 @@
 				<version>4.4.1</version>
 				<configuration>
 					<generateHtml>true</generateHtml>
-					<generateXml>false</generateXml>
+					<generateXml>true</generateXml>
 					<outputDirectory>${project.build.directory}/site/clover</outputDirectory>
 				</configuration>
+				<executions>
+					<execution>
+						<id>clover-setup</id>
+						<phase>initialize</phase>
+						<goals>
+							<goal>setup</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>clover-report</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>aggregate</goal>
+							<goal>clover</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
