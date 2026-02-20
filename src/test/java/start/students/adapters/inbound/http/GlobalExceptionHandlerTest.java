@@ -111,11 +111,11 @@ class GlobalExceptionHandlerTest {
     }
 
     @Test
-    @DisplayName("Should handle MethodArgumentNotValidException")
-    void shouldHandleMethodArgumentNotValidException() {
+    @DisplayName("Should handle MethodArgumentNotValidException with username pattern error")
+    void shouldHandleMethodArgumentNotValidExceptionWithUsernamePattern() {
         // ARRANGE
         BindingResult bindingResult = mock(BindingResult.class);
-        FieldError fieldError = new FieldError("object", "username", "Username é obrigatório");
+        FieldError fieldError = new FieldError("object", "username", "pattern");
         List<FieldError> fieldErrors = new ArrayList<>();
         fieldErrors.add(fieldError);
 
@@ -131,6 +131,144 @@ class GlobalExceptionHandlerTest {
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().isSuccess()).isFalse();
+        assertThat(response.getBody().getMessage()).contains("Username deve conter apenas letras");
+    }
+
+    @Test
+    @DisplayName("Should handle MethodArgumentNotValidException with username size error")
+    void shouldHandleMethodArgumentNotValidExceptionWithUsernameSize() {
+        // ARRANGE
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("object", "username", "size");
+        List<FieldError> fieldErrors = new ArrayList<>();
+        fieldErrors.add(fieldError);
+
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleValidationException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody()).isNotNull();
+        assertThat(response.getBody().getMessage()).contains("Username deve conter entre 8 e 50");
+    }
+
+    @Test
+    @DisplayName("Should handle MethodArgumentNotValidException with password pattern error")
+    void shouldHandleMethodArgumentNotValidExceptionWithPasswordPattern() {
+        // ARRANGE
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("object", "password", "pattern");
+        List<FieldError> fieldErrors = new ArrayList<>();
+        fieldErrors.add(fieldError);
+
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleValidationException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getMessage()).contains("Password deve conter apenas letras");
+    }
+
+    @Test
+    @DisplayName("Should handle MethodArgumentNotValidException with password size error")
+    void shouldHandleMethodArgumentNotValidExceptionWithPasswordSize() {
+        // ARRANGE
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("object", "password", "size");
+        List<FieldError> fieldErrors = new ArrayList<>();
+        fieldErrors.add(fieldError);
+
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleValidationException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getMessage()).contains("Password deve conter entre 8 e 100");
+    }
+
+    @Test
+    @DisplayName("Should handle MethodArgumentNotValidException with generic field error")
+    void shouldHandleMethodArgumentNotValidExceptionWithGenericField() {
+        // ARRANGE
+        BindingResult bindingResult = mock(BindingResult.class);
+        FieldError fieldError = new FieldError("object", "someField", "is invalid");
+        List<FieldError> fieldErrors = new ArrayList<>();
+        fieldErrors.add(fieldError);
+
+        when(bindingResult.getFieldErrors()).thenReturn(fieldErrors);
+
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleValidationException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getMessage()).contains("someField");
+    }
+
+    @Test
+    @DisplayName("Should handle MethodArgumentNotValidException with no errors (fallback)")
+    void shouldHandleMethodArgumentNotValidExceptionWithNoErrors() {
+        // ARRANGE
+        BindingResult bindingResult = mock(BindingResult.class);
+        when(bindingResult.getFieldErrors()).thenReturn(new ArrayList<>());
+
+        MethodArgumentNotValidException exception = mock(MethodArgumentNotValidException.class);
+        when(exception.getBindingResult()).thenReturn(bindingResult);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleValidationException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(response.getBody().getMessage()).isEqualTo("Erro de validação");
+    }
+
+    @Test
+    @DisplayName("Should handle DataIntegrityViolationException with Matrícula constraint")
+    void shouldHandleDataIntegrityViolationExceptionWithMatricula() {
+        // ARRANGE
+        DataIntegrityViolationException exception =
+            new DataIntegrityViolationException("Violação de constraint: matricula_unique");
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleDataIntegrityViolation(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(response.getBody().getMessage().toLowerCase()).contains("matrícula");
+    }
+
+    @Test
+    @DisplayName("Should handle DataIntegrityViolationException with null message")
+    void shouldHandleDataIntegrityViolationExceptionWithNullMessage() {
+        // ARRANGE
+        DataIntegrityViolationException exception =
+            new DataIntegrityViolationException(null);
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleDataIntegrityViolation(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+        assertThat(response.getBody().getMessage().toLowerCase()).contains("dados duplicados");
     }
 
     @Test
@@ -147,6 +285,20 @@ class GlobalExceptionHandlerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().isSuccess()).isFalse();
         assertThat(response.getBody().getMessage().toLowerCase()).contains("erro");
+    }
+
+    @Test
+    @DisplayName("Should handle Exception with different types")
+    void shouldHandleExceptionWithDifferentTypes() {
+        // ARRANGE
+        Exception exception = new IllegalArgumentException("Invalid argument");
+
+        // ACT
+        ResponseEntity<ApiResponse<Void>> response = handler.handleGeneralException(exception);
+
+        // ASSERT
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
+        assertThat(response.getBody().isSuccess()).isFalse();
     }
 }
 
